@@ -4,9 +4,9 @@ RUN export DEBIAN_FRONTEND=noninteractive
 
 RUN curl -o /usr/local/share/ca-certificates/NTUT_CA.crt https://raw.githubusercontent.com/JoeyChen-NTUT/php-8.0-apache/master/NTUT_Computer_And_Network_Center_Root_CA.crt
 RUN update-ca-certificates --fresh
-
 RUN apt-get clean
 RUN apt-get update
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 RUN apt-get install -y apt-utils cron
 
 #modify php.ini for env require
