@@ -7,6 +7,7 @@ RUN update-ca-certificates --fresh
 
 RUN apt-get clean
 RUN apt-get update
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 RUN apt-get install -y apt-utils cron
 
 #modify php.ini for env require
