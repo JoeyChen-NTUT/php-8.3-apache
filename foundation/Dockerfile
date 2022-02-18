@@ -2,7 +2,7 @@ FROM php:8.0-apache
 
 RUN export DEBIAN_FRONTEND=noninteractive
 
-RUN curl -o /usr/local/share/ca-certificates/NTUT_CA.crt https://raw.githubusercontent.com/JoeyChen-NTUT/php-7.4-apache/master/NTUT_Computer_And_Network_Center_Root_CA.crt
+RUN curl -o /usr/local/share/ca-certificates/NTUT_CA.crt https://raw.githubusercontent.com/JoeyChen-NTUT/php-8.0-apache/master/NTUT_Computer_And_Network_Center_Root_CA.crt
 RUN update-ca-certificates --fresh
 
 RUN apt clean
@@ -26,7 +26,11 @@ RUN sed -i -e 's/;curl.cainfo=/curl.cainfo=\/etc\/ssl\/certs\/ca-certificates.cr
 RUN sed -i -e 's/;openssl.cainfo=/openssl.cainfo=\/etc\/ssl\/certs\/ca-certificates.crt/g' /usr/local/etc/php/php.ini
     
 #install mysqli extensions
-RUN docker-php-ext-install pdo pdo_mysql zip gd && docker-php-ext-enable pdo pdo_mysql zip gd sockets
+RUN docker-php-ext-install pdo && docker-php-ext-enable pdo
+RUN docker-php-ext-install pdo_mysql && docker-php-ext-enable pdo_mysql
+RUN docker-php-ext-install zip && docker-php-ext-enable zip
+RUN docker-php-ext-install gd && docker-php-ext-enable gd
+RUN docker-php-ext-install sockets && docker-php-ext-enable sockets
 
 #enable mods
 RUN a2enmod rewrite
