@@ -2,7 +2,7 @@ FROM php:8.0-apache
 
 RUN export DEBIAN_FRONTEND=noninteractive
 
-RUN curl -o /usr/local/share/ca-certificates/NTUT_CA.crt https://raw.githubusercontent.com/JoeyChen-NTUT/php-7.4-apache/master/NTUT_Computer_And_Network_Center_Root_CA.crt
+RUN curl -o /usr/local/share/ca-certificates/NTUT_CA.crt https://raw.githubusercontent.com/JoeyChen-NTUT/php-8.0-apache/master/NTUT_Computer_And_Network_Center_Root_CA.crt
 RUN update-ca-certificates --fresh
 
 RUN apt clean
