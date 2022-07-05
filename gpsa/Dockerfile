@@ -39,8 +39,11 @@ RUN docker-php-ext-configure gd \
         --with-freetype=/usr/include/freetype2 \
         --with-jpeg=/usr/include 
 RUN docker-php-ext-install gd 
-RUN docker-php-ext-install mbstring 
 RUN docker-php-ext-enable gd
+RUN docker-php-ext-install mbstring 
+RUN docker-php-ext-enable mbstring
+RUN docker-php-ext-install exif 
+RUN docker-php-ext-enable exif
    
 #install mysqli extensions
 RUN docker-php-ext-install pdo pdo_mysql && docker-php-ext-enable pdo pdo_mysql
