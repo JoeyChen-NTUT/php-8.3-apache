@@ -58,7 +58,7 @@ RUN cat /tmp/csdk.tar.parta* > /tmp/csdk.tar && \
     
 RUN cd /tmp/csdk && \
     chmod +x installclientsdk && \
-    ./installclientsdk -DLICENSE_ACCEPTED=TRUE
+    ./installclientsdk  -i silent -DLICENSE_ACCEPTED=TRUE -DDEBUG_LEVEL=9
 
 #./installclientsdk -i silent -DLICENSE_ACCEPTED=TRUE
 
