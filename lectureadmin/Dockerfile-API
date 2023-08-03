@@ -65,7 +65,7 @@ echo 'export ODBCSYSINI="/etc"' >> /etc/apache2/envvars
 
 #install odbc and informix
 
-RUN apt-get install unixodbc unixodbc-dev libncurses5 ocaml libelf-dev -y
+RUN apt-get install unixodbc unixodbc-dev libncurses5 libelf-dev -y
 
 COPY csdk.tar.parta* /tmp/
 
