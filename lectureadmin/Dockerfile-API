@@ -1,4 +1,4 @@
-FROM php:8.2-apache
+FROM php:8.2-apache-bullseye
 
 RUN curl -o /usr/local/share/ca-certificates/NTUT_CA.crt https://raw.githubusercontent.com/JoeyChen-NTUT/php-7.3-apache/master/NTUT_Computer_And_Network_Center_Root_CA.crt
 RUN update-ca-certificates --fresh
@@ -73,7 +73,8 @@ RUN cat /tmp/csdk.tar.parta* > /tmp/csdk.tar && \
     mkdir /tmp/csdk && \
     tar -xvf /tmp/csdk.tar -C /tmp/csdk
 
-RUN /bin/bash -c '/tmp/csdk/installclientsdk -i silent -DLICENSE_ACCEPTED=TRUE -DUSER_INSTALL_DIR=/opt/IBM/Informix_Client-SDK'
+RUN /bin/bash -c '/tmp/csdk/installclientsdk -i silent -DLICENSE_ACCEPTED=TRUE' && \
+    rm -rf /tmp/csdk*
 
 # Install PHP odbc extension
 # https://github.com/docker-library/php/issues/103
