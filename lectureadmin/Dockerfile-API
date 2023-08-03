@@ -47,20 +47,6 @@ RUN apt-get install -y \
 #install mysqli extensions
 RUN docker-php-ext-install pdo pdo_mysql sockets && docker-php-ext-enable pdo pdo_mysql sockets
 
-#install odbc and informix
-RUN apt-get install unixodbc unixodbc-dev libncurses5 -y
-
-COPY csdk.tar.parta* /tmp/
-
-RUN cat /tmp/csdk.tar.parta* > /tmp/csdk.tar && \
-    mkdir /tmp/csdk && \
-    tar -xvf /tmp/csdk.tar -C /tmp/csdk
-    
-RUN cd /tmp/csdk && \
-    chmod +x installclientsdk && \
-    ./installclientsdk  -i silent -DLICENSE_ACCEPTED=TRUE -DDEBUG_LEVEL=9
-
-#./installclientsdk -i silent -DLICENSE_ACCEPTED=TRUE
 
 RUN echo 'export INFORMIXDIR="/opt/IBM/Informix_Client-SDK"' >> /root/.bashrc && \
 echo 'export LD_LIBRARY_PATH="$INFORMIXDIR/lib:$INFORMIXDIR/lib/esql:$INFORMIXDIR/cli:$LD_LIBRARY_PATH"' >> /root/.bashrc && \
@@ -75,6 +61,18 @@ echo 'export SHLIB_PATH="$INFORMIXDIR/lib/esql"' >> /etc/apache2/envvars && \
 echo 'export LIBPATH="$INFORMIXDIR/lib/esql"' >> /etc/apache2/envvars && \
 echo 'export ODBCINI="/etc/odbc.ini"' >> /etc/apache2/envvars && \
 echo 'export ODBCSYSINI="/etc"' >> /etc/apache2/envvars
+
+
+#install odbc and informix
+RUN apt-get install unixodbc unixodbc-dev libncurses5 -y
+
+COPY csdk.tar.parta* /tmp/
+
+RUN cat /tmp/csdk.tar.parta* > /tmp/csdk.tar && \
+    mkdir /tmp/csdk && \
+    tar -xvf /tmp/csdk.tar -C /tmp/csdk
+
+RUN /bin/bash -c '/tmp/csdk/installclientsdk -i silent -DLICENSE_ACCEPTED=TRUE -DUSER_INSTALL_DIR=/opt/IBM/Informix_Client-SDK'
 
 # Install PHP odbc extension
 # https://github.com/docker-library/php/issues/103
