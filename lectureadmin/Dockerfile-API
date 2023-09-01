@@ -47,48 +47,5 @@ RUN apt-get install -y \
 #install mysqli extensions
 RUN docker-php-ext-install pdo pdo_mysql sockets && docker-php-ext-enable pdo pdo_mysql sockets
 
-
-RUN echo 'export INFORMIXDIR="/opt/IBM/Informix_Client-SDK"' >> /root/.bashrc && \
-echo 'export LD_LIBRARY_PATH="$INFORMIXDIR/lib:$INFORMIXDIR/lib/esql:$INFORMIXDIR/cli:$LD_LIBRARY_PATH"' >> /root/.bashrc && \
-echo 'export SHLIB_PATH="$INFORMIXDIR/lib/esql"' >> /root/.bashrc && \
-echo 'export LIBPATH="$INFORMIXDIR/lib/esql"' >> /root/.bashrc && \
-echo 'export ODBCINI="/etc/odbc.ini"' >> /root/.bashrc && \
-echo 'export ODBCSYSINI="/etc"' >> /root/.bashrc
-
-RUN echo 'export INFORMIXDIR="/opt/IBM/Informix_Client-SDK"' >> /etc/apache2/envvars && \
-echo 'export LD_LIBRARY_PATH="$INFORMIXDIR/lib:$INFORMIXDIR/lib/esql:$INFORMIXDIR/cli:$LD_LIBRARY_PATH"' >> /etc/apache2/envvars && \
-echo 'export SHLIB_PATH="$INFORMIXDIR/lib/esql"' >> /etc/apache2/envvars && \
-echo 'export LIBPATH="$INFORMIXDIR/lib/esql"' >> /etc/apache2/envvars && \
-echo 'export ODBCINI="/etc/odbc.ini"' >> /etc/apache2/envvars && \
-echo 'export ODBCSYSINI="/etc"' >> /etc/apache2/envvars
-
-
-#install odbc and informix
-
-RUN apt-get install unixodbc unixodbc-dev libncurses5 libelf-dev -y
-
-COPY csdk.tar.parta* /tmp/
-
-RUN cat /tmp/csdk.tar.parta* > /tmp/csdk.tar && \
-    mkdir /tmp/csdk && \
-    tar -xvf /tmp/csdk.tar -C /tmp/csdk
-
-RUN /bin/bash -c '/tmp/csdk/installclientsdk -i silent -DLICENSE_ACCEPTED=TRUE' && \
-    rm -rf /tmp/csdk*
-
-# Install PHP odbc extension
-# https://github.com/docker-library/php/issues/103
-RUN set -x \
-    && docker-php-source extract \
-    && cd /usr/src/php/ext/odbc \
-    && phpize \
-    && sed -ri 's@^ *test +"\$PHP_.*" *= *"no" *&& *PHP_.*=yes *$@#&@g' configure \
-    && ./configure --with-unixODBC=shared,/usr \
-    && docker-php-ext-install odbc \
-    && docker-php-source delete
-#RUN docker-php-ext-configure pdo_odbc --with-pdo-odbc=unixODBC,/usr \
-# && docker-php-ext-install pdo_odbc
-
-
 #enable mods
 RUN a2enmod rewrite
