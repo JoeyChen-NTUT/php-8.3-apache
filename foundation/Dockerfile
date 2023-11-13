@@ -1,4 +1,4 @@
-FROM php:8.1-apache
+FROM php:8.2-apache
 #2023/11/13
 RUN export DEBIAN_FRONTEND=noninteractive
 
